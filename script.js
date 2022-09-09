@@ -7455,20 +7455,25 @@ $(document).ready(function() {
 
   // Check if there is a date
   if ( localStorage.getItem("day") &&
+       localStorage.getItem("delta") &&
        localStorage.getItem("year") &&
        localStorage.getItem("time") &&
        localStorage.getItem("sun") &&
        localStorage.getItem("temperature") &&
        localStorage.getItem("rain") &&
-       localStorage.getItem("wind") ) {
+       localStorage.getItem("wind") &&
+       localStorage.getItem("souls") ) {
     // If there is, set it
     $("#cal-sun").val( localStorage.getItem("sun") );
     $("#cal-day").val( localStorage.getItem("day") );
+    $("#cal-delta").val( localStorage.getItem("delta") );
     $("#cal-year").val( localStorage.getItem("year") );
     $("#cal-time").val( localStorage.getItem("time") );
     $("#cal-temperature").val( localStorage.getItem("temperature") );
     $("#cal-rain").val( localStorage.getItem("rain") );
     $("#cal-wind").val( localStorage.getItem("wind") );
+    $("#souls-container").html( localStorage.getItem("souls") );
+    $("#weather-rand").trigger("click");
     updateTime()
   } else {
     // If there isn't one set, call the setup wizard
@@ -7482,6 +7487,7 @@ $(document).ready(function() {
   function updateTime() {
     // The days go from 0 to 364
     let d = parseInt( $("#cal-day").val() );
+    let dd = parseInt( $("#cal-delta").val() );
     // The years go from -700 to 1600 (DR)
     let y = parseInt( $("#cal-year").val() );
     // The time is in minutes and goes from 0 to 1439
@@ -7492,14 +7498,47 @@ $(document).ready(function() {
     // Update time and inheriting variables
     if ( t >= 0 ) {
       if ( Math.floor( t / 1440 ) > 0 ) {
-        d += Math.floor( t / 1440 );
+        let delta_d = Math.floor( t / 1440 );
+        dd += delta_d;
+        d += delta_d;
         t = t % 1440;
+        // Update souls
+        if ( delta_d > 0 ) {
+          $(".dead-soul").each(function() {
+            let uuid = $(this).prop("id").replace("dead-", "");
+            for (var i = 0; i < delta_d; i++) {
+              if ( rndInt(1, 20) == 1 && $(this).find("i").hasClass("mdi-ghost") ) {
+                $( "#soul-icon-" + uuid )
+                  .removeClass("mdi-ghost")
+                  .addClass("mdi-ghost-off has-text-grey-light");
+                $( "#soul-name-" + uuid )
+                  .addClass("has-text-grey-light");
+                alert( $( "#soul-name-" + uuid ).html() + "'s soul was devoured." );
+              }
+            }
+          });
+          $(".raised-soul").each(function() {
+            let uuid = $(this).prop("id").replace("raised-", "");
+            let remain = parseInt( $( "#soul-time-" + uuid ).html() );
+            $( "#soul-time-" + uuid ).html( remain - delta_d );
+          });
+        }
       }
     } else {
       t = Math.abs(t);
       if ( Math.floor( t / 1440 ) > 0 ) {
-        d -= Math.floor( t / 1440 );
+        let delta_d = Math.floor( t / 1440 );
+        dd -= delta_d;
+        d -= delta_d;
         t = 1440 - (t % 1440);
+        // Update souls
+        if ( delta_d > 0 ) {
+          $(".raised-soul").each(function() {
+            let uuid = $(this).prop("id").replace("raised-", "");
+            let remain = parseInt( $( "#soul-time-" + uuid ).html() );
+            $( "#soul-time-" + uuid ).html( remain + delta_d );
+          });
+        }
       }
     }
     // Update day and inheriting variables
@@ -7531,8 +7570,13 @@ $(document).ready(function() {
     // Save new values
     localStorage.setItem("sun", s);
     localStorage.setItem("day", d);
+    localStorage.setItem("delta", dd);
     localStorage.setItem("year", y);
     localStorage.setItem("time", t);
+    $("#cal-day").val(d);
+    $("#cal-delta").val(dd);
+    $("#cal-year").val(y);
+    $("#cal-time").val(t);
     // Export data
     let foo_hour = Math.floor( t / 60 );
     foo_hour = foo_hour.toString();
@@ -7553,6 +7597,8 @@ $(document).ready(function() {
       $("#date-month").html( "of " + year[d][1] );
     }
     $("#date-year").html( y );
+    // Save soul list
+    localStorage.setItem("souls", $("#souls-container").html() );
   }
   // Append this method to its triggers
   $("#cal-day, #cal-year, #cal-time").on("change input", updateTime);
@@ -7629,6 +7675,77 @@ $(document).ready(function() {
     $("#weather-wind-icon")
       .removeClass("mdi-rotate-45 mdi-rotate-90 mdi-rotate-135 mdi-rotate-180 mdi-rotate-225 mdi-rotate-270 mdi-rotate-315")
       .addClass( "mdi-rotate-" + new_w );
+  });
+
+  /****************************************************************/
+  /*                         SOUL MANAGING                        */
+  /****************************************************************/
+
+  // Show add-soul modal
+  $("#add-soul").on("click", function() {
+    $("#soul-modal").addClass("is-active");
+  });
+  // Show remaining HP if applicable
+  $("#soul-type").on("change", function() {
+    if ( $(this).val() == "raised" ) {
+      $("#soul-time-container").removeClass("is-hidden");
+      $("#soul-time").focus();
+    } else {
+      $("#soul-time-container").addClass("is-hidden");
+      $("#soul-time").val("");
+    }
+  });
+
+  // Add soul
+  $("#soul-do").on("click", function() {
+    if ( $("#soul-name").val() != "" && $("#soul-type").val() != "" ) {
+      let uuid = crypto.randomUUID();
+      if ( $("#soul-type").val() == "dead" ) {
+        // Dead soul until being devoured
+        let name_cell = $("<td>")
+          .prop("id", "soul-name-" + uuid )
+          .html( $("#soul-name").val() );
+        let icon = $("<i>")
+          .prop("id", "soul-icon-" + uuid )
+          .addClass("mdi mdi-ghost");
+        let span = $("<span>")
+          .addClass("icon is-small")
+          .append( icon );
+        let other_cell = $("<td>")
+          .addClass("has-text-centered")
+          .append( span );
+        let row = $("<tr>")
+          .prop("id", $("#soul-type").val() + "-" + uuid )
+          .addClass( $("#soul-type").val() + "-soul" )
+          .append( name_cell )
+          .append( other_cell );
+        // Add final row
+        $("#souls-container").append( row );
+      } else {
+        // Raised person withering
+        let name_cell = $("<td>")
+          .prop("id", "soul-name-" + uuid )
+          .html( $("#soul-name").val() );
+        let other_cell = $("<td>")
+          .prop("id", "soul-time-" + uuid )
+          .addClass("has-text-centered")
+          .html( $("#soul-time").val() );
+        let row = $("<tr>")
+          .prop("id", $("#soul-type").val() + "-" + uuid )
+          .addClass( $("#soul-type").val() + "-soul" )
+          .append( name_cell )
+          .append( other_cell );
+        // Add final row
+        $("#souls-container").append( row );
+      }
+      $("#soul-name").val("");
+      $("#soul-type").val("dead");
+      $("#soul-time").val("");
+      $("#soul-modal").removeClass("is-active");
+      localStorage.setItem("souls", $("#souls-container").html() );
+    } else {
+      alert("Fill ALL the fields!");
+    }
   });
 
   /****************************************************************/
@@ -7731,6 +7848,7 @@ $(document).ready(function() {
       // Save them on the localStorage
       localStorage.setItem("sun", s);
       localStorage.setItem("day", d);
+      localStorage.setItem("delta", 0);
       localStorage.setItem("year", y);
       localStorage.setItem("time", t);
       localStorage.setItem("temperature", k);
@@ -7739,6 +7857,7 @@ $(document).ready(function() {
       // And in the form
       $("#cal-sun").val( s );
       $("#cal-day").val( d );
+      $("#cal-delta").val( 0 );
       $("#cal-year").val( y );
       $("#cal-time").val( t );
       $("#cal-temperature").val( k );
