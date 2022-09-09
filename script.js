@@ -7534,8 +7534,12 @@ $(document).ready(function() {
     localStorage.setItem("year", y);
     localStorage.setItem("time", t);
     // Export data
-    $("#time-hour").html( Math.floor( t / 60 ) );
-    $("#time-minute").html( t % 60 );
+    let foo_hour = Math.floor( t / 60 );
+    foo_hour = foo_hour.toString();
+    let foo_min = t % 60;
+    foo_min = foo_min.toString();
+    $("#time-hour").html( foo_hour.padStart(2, "0") );
+    $("#time-minute").html( foo_min.padStart(2, "0") );
     $("#date-year-name").html( year_name[ y ] );
     $("#date-season").html( season );
     $("#date-tod").html( tod );
