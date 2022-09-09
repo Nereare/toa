@@ -7435,6 +7435,21 @@ $(document).ready(function() {
     "subarctic": [ [360, 1080],  [240, 1200],  [360, 1080],  [360, 960] ],
     "arctic": [ [360, 1080],  [120, 1320],  [360, 1080],  [480, 840] ]
   };
+
+  let temp = {
+    "scorching": [0, 5, 20, 40, 60],
+    "warm": [1, 10, 60, 80, 95],
+    "moderate": [10, 30, 40, 80, 100],
+    "cold": [0, 40, 70, 95, 100],
+    "freezing": [0, 70, 90, 100, 100]
+  };
+  let rain = {
+    "monsoon": [0, 10, 30, 50],
+    "wet": [0, 20, 40, 60],
+    "moderate": [0, 25, 50, 75],
+    "dry": [0, 30, 60, 90],
+    "desert": [0, 40, 100, 100]
+  };
   // End of large arrays
   console.log("App ready!");
 
@@ -7442,12 +7457,18 @@ $(document).ready(function() {
   if ( localStorage.getItem("day") &&
        localStorage.getItem("year") &&
        localStorage.getItem("time") &&
-       localStorage.getItem("sun") ) {
+       localStorage.getItem("sun") &&
+       localStorage.getItem("temperature") &&
+       localStorage.getItem("rain") &&
+       localStorage.getItem("wind") ) {
     // If there is, set it
     $("#cal-sun").val( localStorage.getItem("sun") );
     $("#cal-day").val( localStorage.getItem("day") );
     $("#cal-year").val( localStorage.getItem("year") );
     $("#cal-time").val( localStorage.getItem("time") );
+    $("#cal-temperature").val( localStorage.getItem("temperature") );
+    $("#cal-rain").val( localStorage.getItem("rain") );
+    $("#cal-wind").val( localStorage.getItem("wind") );
     updateTime()
   } else {
     // If there isn't one set, call the setup wizard
@@ -7533,7 +7554,81 @@ $(document).ready(function() {
   $("#cal-day, #cal-year, #cal-time").on("change input", updateTime);
 
   /****************************************************************/
-  /*                   END OF TIME CALCULATION                    */
+  /*                  MAIN WEATHER RANDOMIZATION                  */
+  /****************************************************************/
+
+  $("#weather-rand").on("click", function() {
+    let k = $("#cal-temperature").val();
+    let r = $("#cal-rain").val();
+    let w = parseInt( $("#cal-wind").val() );
+
+    // Randomize temperature
+    let temp_data = {
+      "scorching": ["mdi-thermometer-low", "is-info is-light"],
+      "hot": ["mdi-thermometer-low", "is-info"],
+      "warm": ["mdi-thermometer", "is-warning"],
+      "cold": ["mdi-thermometer-high", "is-danger is-ligh"],
+      "freezing": ["mdi-thermometer-high", "is-danger"]
+    };
+    let temp_index = "";
+    rnd = rndInt(0, 100);
+    if ( rnd > temp[k][4] ) { temp_index = "scorching"; }
+    else if ( rnd > temp[k][3] ) { temp_index = "hot"; }
+    else if ( rnd > temp[k][2] ) { temp_index = "warm"; }
+    else if ( rnd > temp[k][1] ) { temp_index = "cold"; }
+    else { temp_index = "freezing"; }
+    // Apply temperature changes
+    $("#weather-temperature-button")
+      .removeClass("is-info is-warning is-danger is-ligh")
+      .addClass( temp_data[ temp_index ][1] );
+    $("#weather-temperature-icon")
+      .removeClass("mdi-thermometer-low mdi-thermometer mdi-thermometer-high")
+      .addClass( temp_data[ temp_index ][0] );
+
+    // Randomize precipitation
+    let rain_data = {
+      "torrent": ["is-dark", "mdi-weather-pouring"],
+      "rain": ["is-dark", "mdi-weather-rainy"],
+      "humid": ["is-light", "mdi-weather-cloudy"],
+      "clear": ["", "mdi-weather-sunny"]
+    };
+    if ( temp_index == "cold" || temp_index == "freezing" ) {
+      rain_data["humid"][1] = "mdi-weather-fog";
+      rain_data["rain"][1] = "mdi-weather-snowy";
+      rain_data["torrent"][1] = "mdi-weather-snowy-heavy";
+    }
+    if ( r == "dry" || r == "desert" ) {
+      rain_data["humid"][1] = "mdi-weather-dust";
+      rain_data["rain"][1] = "mdi-weather-lightning";
+      rain_data["torrent"][1] = "mdi-weather-tornado";
+    }
+    let rain_index = "";
+    rnd = rndInt(0, 100);
+    if ( rnd > rain[r][3] ) { rain_index = "torrent"; }
+    else if ( rnd > rain[r][2] ) { rain_index = "rain"; }
+    else if ( rnd > rain[r][1] ) { rain_index = "humid"; }
+    else { rain_index = "clear"; }
+    // Apply temperature changes
+    $("#weather-rain-button")
+      .removeClass("is-dark is-light")
+      .addClass( rain_data[ rain_index ][0] );
+    $("#weather-rain-icon")
+      .removeClass("mdi-weather-pouring mdi-weather-rainy mdi-weather-cloudy mdi-weather-sunny mdi-weather-fog mdi-weather-snowy mdi-weather-snowy-heavy mdi-weather-dust mdi-weather-lightning mdi-weather-tornado")
+      .addClass( rain_data[ rain_index ][1] );
+
+    // Randomize wind
+    rnd = rndInt(0, 4);
+    let sign = rndInt(-1, 1);
+    let delta = 45 * rnd * sign;
+    let new_w = w + delta;
+    if ( new_w < 0 ) { new_w = 360 + new_w; }
+    $("#weather-wind-icon")
+      .removeClass("mdi-rotate-45 mdi-rotate-90 mdi-rotate-135 mdi-rotate-180 mdi-rotate-225 mdi-rotate-270 mdi-rotate-315")
+      .addClass( "mdi-rotate-" + new_w );
+  });
+
+  /****************************************************************/
+  /*                              END                             */
   /****************************************************************/
 
   // Build default remove time button method
@@ -7599,6 +7694,13 @@ $(document).ready(function() {
       $("#setup-year-name").val("Invalid year!");
     }
   });
+  // Show custom wind direction
+  $("#setup-wind").on("change", function() {
+    $("#setup-wind-direction").removeClass("mdi-rotate-45 mdi-rotate-90 mdi-rotate-135 mdi-rotate-180 mdi-rotate-225 mdi-rotate-270 mdi-rotate-315");
+    if ( $(this).val() != "0" ) {
+      $("#setup-wind-direction").addClass( "mdi-rotate-" + $(this).val() );
+    }
+  });
   // Run setup
   $("#setup-do").on("click", function() {
     // Check if all fields are valid
@@ -7610,23 +7712,36 @@ $(document).ready(function() {
          parseInt( $("#setup-year").val() ) <= 1600 &&
          $("#setup-hour").val() != "" &&
          $("#setup-min").val() != "" &&
-         $("#setup-sun").val() != "" ) {
+         $("#setup-sun").val() != "" &&
+         $("#setup-temperature").val() != "" &&
+         $("#setup-rain").val() != "" &&
+         $("#setup-wind").val() != "" ) {
       // Set variables
       let s = $("#setup-sun").val();
       let d = parseInt( $("#setup-month").val() ) + parseInt( $("#setup-day").val() );
       let y = parseInt( $("#setup-year").val() );
       let t = ( parseInt( $("#setup-hour").val() ) * 60 ) + parseInt( $("#setup-min").val() );
+      let k = $("#setup-temperature").val();
+      let r = $("#setup-rain").val();
+      let w = parseInt( $("#setup-wind").val() );
       // Save them on the localStorage
       localStorage.setItem("sun", s);
       localStorage.setItem("day", d);
       localStorage.setItem("year", y);
       localStorage.setItem("time", t);
+      localStorage.setItem("temperature", k);
+      localStorage.setItem("rain", r);
+      localStorage.setItem("wind", w);
       // And in the form
       $("#cal-sun").val( s );
       $("#cal-day").val( d );
       $("#cal-year").val( y );
       $("#cal-time").val( t );
+      $("#cal-temperature").val( k );
+      $("#cal-rain").val( r );
+      $("#cal-wind").val( w );
       updateTime();
+      $("#weather-rand").trigger("click");
       // Hide setup wizard
       $("#setup-modal").removeClass("is-active");
     } else {
@@ -7641,3 +7756,7 @@ $(document).ready(function() {
     }
   });
 });
+
+function rndInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}

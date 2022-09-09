@@ -43,6 +43,9 @@
                   <input type="text" class="is-hidden" id="cal-year">
                   <input type="text" class="is-hidden" id="cal-time">
                   <input type="text" class="is-hidden" id="cal-sun">
+                  <input type="text" class="is-hidden" id="cal-temperature">
+                  <input type="text" class="is-hidden" id="cal-rain">
+                  <input type="text" class="is-hidden" id="cal-wind">
 
                   <!-- Calendar & Clock -->
                   <div class="column is-6 has-text-centered">
@@ -180,7 +183,45 @@
 
                   <!-- Weather -->
                   <div class="column is-2 has-text-centered">
-                    // // // // // //
+                    <div class="field">
+                      <div class="control">
+                        <button class="button is-medium is-warning" id="weather-temperature-button">
+                          <span class="icon">
+                            <i class="mdi mdi-thermometer mdi-36px" id="weather-temperature-icon"></i>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+
+                    <div class="field">
+                      <div class="control">
+                        <button class="button is-medium is-dark" id="weather-rain-button">
+                          <span class="icon">
+                            <i class="mdi mdi-weather-fog mdi-36px" id="weather-rain-icon"></i>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+
+                    <div class="field">
+                      <div class="control">
+                        <button class="button is-medium is-light">
+                          <span class="icon">
+                            <i class="mdi mdi-arrow-up mdi-36px mdi-rotate-135" id="weather-wind-icon"></i>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+
+                    <div class="field">
+                      <div class="control">
+                        <button class="button" id="weather-rand">
+                          <span class="icon">
+                            <i class="mdi mdi-dice-5 mdi-24px"></i>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
                   </div>
 
                   <!-- Soul Tracker -->
@@ -246,14 +287,23 @@
           <p class="modal-card-title">
             <span class="icon-text">
               <span class="icon">
-                <i class="mdi mdi-calendar"></i>
+                <i class="mdi mdi-clock"></i>
               </span>
-              <span>Select Initial Date &amp; Time</span>
+              <span>Select Initial Parameters</span>
             </span>
           </p>
         </header>
 
         <section class="modal-card-body">
+          <h3 class="title is-3 mb-1">
+            <span class="icon-text">
+              <span class="icon">
+                <i class="mdi mdi-calendar"></i>
+              </span>
+              <span>Time</span>
+            </span>
+          </h3>
+
           <div class="field has-addons">
             <div class="control">
               <input type="number" class="input" id="setup-day" min="1" step="1" max="30" placeholder="Day">
@@ -327,6 +377,76 @@
                   <option value="arctic">arctic</option>
                 </select>
               </div>
+            </div>
+          </div>
+
+          <h3 class="title is-3 mb-1 mt-5">
+            <span class="icon-text">
+              <span class="icon">
+                <i class="mdi mdi-weather-fog"></i>
+              </span>
+              <span>Weather</span>
+            </span>
+          </h3>
+
+          <div class="field has-addons">
+            <div class="control">
+              <button class="button is-static" tabindex="-1">Temperature</button>
+            </div>
+            <div class="control is-expanded">
+              <div class="select is-fullwidth">
+                <select id="setup-temperature">
+                  <option value="scorching">Scorching</option>
+                  <option value="warm">Warm</option>
+                  <option value="moderate" selected>Moderate</option>
+                  <option value="cold">Cold</option>
+                  <option value="freezing">Freezing</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="field has-addons">
+            <div class="control">
+              <button class="button is-static" tabindex="-1">Precipitation</button>
+            </div>
+            <div class="control is-expanded">
+              <div class="select is-fullwidth">
+                <select id="setup-rain">
+                  <option value="monsoon">Monsoon</option>
+                  <option value="wet">Wet</option>
+                  <option value="moderate" selected>Moderate</option>
+                  <option value="dry">Dry</option>
+                  <option value="desert">Desert</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="field has-addons">
+            <div class="control">
+              <button class="button is-static" tabindex="-1">Wind</button>
+            </div>
+            <div class="control is-expanded">
+              <div class="select is-fullwidth">
+                <select id="setup-wind">
+                  <option value="0" selected>North</option>
+                  <option value="45">Northeast</option>
+                  <option value="90">East</option>
+                  <option value="135">Southeast</option>
+                  <option value="180">South</option>
+                  <option value="225">Southwest</option>
+                  <option value="270">West</option>
+                  <option value="315">Northwest</option>
+                </select>
+              </div>
+            </div>
+            <div class="control">
+              <button class="button is-static" tabindex="-1">
+                <span class="icon">
+                  <i class="mdi mdi-arrow-up mdi-24px" id="setup-wind-direction"></i>
+                </span>
+              </button>
             </div>
           </div>
         </section>
