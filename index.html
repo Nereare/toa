@@ -33,6 +33,7 @@
     <script type="text/javascript" src="script.js"></script>
     <script type="text/javascript" src="rumors.js"></script>
     <script type="text/javascript" src="text.js"></script>
+    <script type="text/javascript" src="tables.js"></script>
   </head>
 
   <body>
@@ -291,111 +292,299 @@
 
                 <div class="column">
                   <div class="box">
-                    <table class="table is-fullwidth is-striped is-hoverable">
-                      <thead>
-                        <tr>
-                          <th>Stay</th>
-                          <th>Night</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>The Thundering Lizard (Poor)</td>
-                          <td>5 sp</td>
-                        </tr>
-                        <tr>
-                          <td>Kaya's House of Repose (Modest)</td>
-                          <td>1 gp</td>
-                        </tr>
-                      </tbody>
-                    </table>
+                    <div class="field">
+                      <div class="control is-expanded">
+                        <div class="select is-fullwidth is-small is-success">
+                          <select id="table-list">
+                            <option value="lodging" selected>Lodging</option>
+                            <option value="equipment">Special Equipment</option>
+                            <option value="port">Port Nyanzaru</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
 
-                    <table class="table is-fullwidth is-striped is-hoverable">
-                      <thead>
-                        <tr>
-                          <th>Monopoly Item</th>
-                          <th>Price</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>Heavy armor</td>
-                          <td>&times;3</td>
-                        </tr>
-                        <!-- Ekene-Afa -->
-                        <tr>
-                          <th colspan="2">Ekene-Afa</th>
-                        </tr>
-                        <tr>
-                          <td class="pl-5">+1 ammunition (per piece)</td>
-                          <td>50 gp</td>
-                        </tr>
-                        <tr>
-                          <td class="pl-5">+1 shield, wooden</td>
-                          <td>450 gp</td>
-                        </tr>
-                        <tr>
-                          <td class="pl-5">+1 dagger</td>
-                          <td>500 gp</td>
-                        </tr>
-                        <tr>
-                          <td class="pl-5">+1 yklwa</td>
-                          <td>500 gp</td>
-                        </tr>
-                        <!-- Ifan Talro'a -->
-                        <tr>
-                          <th colspan="2">Ifan Talro'a</th>
-                        </tr>
-                        <tr>
-                          <td class="pl-5">Flying monkey</td>
-                          <td>100 gp</td>
-                        </tr>
-                        <tr>
-                          <td class="pl-5">Giant lizard</td>
-                          <td>100 gp</td>
-                        </tr>
-                        <tr>
-                          <td class="pl-5">Hadrosaurus</td>
-                          <td>100 gp</td>
-                        </tr>
-                        <tr>
-                          <td class="pl-5">Ankylosaurus</td>
-                          <td>250 gp</td>
-                        </tr>
-                        <tr>
-                          <td class="pl-5">Deinonychus</td>
-                          <td>250 gp</td>
-                        </tr>
-                        <tr>
-                          <td class="pl-5">Flying snake</td>
-                          <td>250 gp</td>
-                        </tr>
-                        <tr>
-                          <td class="pl-5">Ticeratops</td>
-                          <td>500 gp</td>
-                        </tr>
-                        <!-- Wakanga O'tamu -->
-                        <tr>
-                          <th colspan="2">Wakanga O'tamu</th>
-                        </tr>
-                        <tr>
-                          <td class="pl-5">Potion, common</td>
-                          <td>80 gp</td>
-                        </tr>
-                        <tr>
-                          <td class="pl-5">Potion, uncommon</td>
-                          <td>300 gp</td>
-                        </tr>
-                        <tr>
-                          <td class="pl-5">Spell scroll, 1st-level</td>
-                          <td>100 gp</td>
-                        </tr>
-                        <tr>
-                          <td class="pl-5">Spell scroll, 2nd-level</td>
-                          <td>550 gp</td>
-                        </tr>
-                      </tbody>
-                    </table>
+                    <div class="tables" id="lodging">
+                      <table class="table is-fullwidth is-striped is-hoverable">
+                        <thead>
+                          <tr>
+                            <th>Item</th>
+                            <th>Price</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <th colspan="2">Inn stay (per night)</th>
+                          </tr>
+                          <tr>
+                            <td class="pl-5">
+                              The Thundering Lizard
+                              <p class="is-size-7"><em>Poor</em></p>
+                            </td>
+                            <td>5 sp</td>
+                          </tr>
+                          <tr>
+                            <td class="pl-5">
+                              Kaya's House of Repose
+                              <p class="is-size-7"><em>Modest</em></p>
+                            </td>
+                            <td>1 gp</td>
+                          </tr>
+                          <tr>
+                            <th colspan="2">Meals (per day)</th>
+                          </tr>
+                          <tr>
+                            <td class="pl-5">
+                              Peppered flounder with red beans and sweet cabbage
+                              <p class="is-size-7"><em>Thundering Lizard, Poor</em></p>
+                            </td>
+                            <td>3 sp</td>
+                          </tr>
+                          <tr>
+                            <td class="pl-5">
+                              Seared scallops with brown rice and lemongrass
+                              <p class="is-size-7"><em>Thundering Lizard, Modest</em></p>
+                            </td>
+                            <td>5 sp</td>
+                          </tr>
+                          <tr>
+                            <td class="pl-5">
+                              Pickled lizard with lettuce and mango with a side of clams
+                              <p class="is-size-7"><em>Kaya's House, Modest</em></p>
+                            </td>
+                            <td>5 sp</td>
+                          </tr>
+                          <tr>
+                            <td class="pl-5">
+                              Sauteed frog with white beans and baked bananas with a side of crayfish
+                              <p class="is-size-7"><em>Kaya's House, Confortable</em></p>
+                            </td>
+                            <td>8 sp</td>
+                          </tr>
+                          <tr>
+                            <th colspan="2">Tej</th>
+                          </tr>
+                          <tr>
+                            <td class="pl-5">
+                              Gallon
+                              <p class="is-size-7"><em>Port Nyanzaru</em></p>
+                            </td>
+                            <td>2 sp</td>
+                          </tr>
+                          <tr>
+                            <td class="pl-5">
+                              Mug
+                              <p class="is-size-7"><em>Port Nyanzaru</em></p>
+                            </td>
+                            <td>4 cp</td>
+                          </tr>
+                          <tr>
+                            <td class="pl-5">
+                              Gallon
+                              <p class="is-size-7"><em>Fort Beluarian</em></p>
+                            </td>
+                            <td>3 sp</td>
+                          </tr>
+                          <tr>
+                            <td class="pl-5">
+                              Mug
+                              <p class="is-size-7"><em>Fort Beluarian</em></p>
+                            </td>
+                            <td>6 cp</td>
+                          </tr>
+                          <tr>
+                            <th colspan="2">Ale</th>
+                          </tr>
+                          <tr>
+                            <td class="pl-5">Gallon</td>
+                            <td>1 gp</td>
+                          </tr>
+                          <tr>
+                            <td class="pl-5">Mug</td>
+                            <td>2 sp</td>
+                          </tr>
+                          <tr>
+                            <th colspan="2">Wine</th>
+                          </tr>
+                          <tr>
+                            <td class="pl-5">Common (pitcher)</td>
+                            <td>1 gp</td>
+                          </tr>
+                          <tr>
+                            <td class="pl-5">Fine (bottle)</td>
+                            <td>50 gp</td>
+                          </tr>
+                          <tr>
+                            <td>Banquet</td>
+                            <td>10 gp</td>
+                          </tr>
+                          <tr>
+                            <td>Bread, loaf</td>
+                            <td>2 cp</td>
+                          </tr>
+                          <tr>
+                            <td>Cheese, hunk</td>
+                            <td>2 sp</td>
+                          </tr>
+                          <tr>
+                            <th colspan="2">Meat, chunk</th>
+                          </tr>
+                          <tr>
+                            <td class="pl-5">Lizard or dinosaur</td>
+                            <td>3 sp</td>
+                          </tr>
+                          <tr>
+                            <td class="pl-5">Cow or goat</td>
+                            <td>2 gp</td>
+                          </tr>
+                          <tr>
+                            <td class="pl-5">Fish, ocean</td>
+                            <td>2 sp</td>
+                          </tr>
+                          <tr>
+                            <td class="pl-5">Fish, river</td>
+                            <td>5 sp</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div class="tables" id="port">
+                      <table class="table is-fullwidth is-striped is-hoverable">
+                        <thead>
+                          <tr>
+                            <th>Monopoly Item</th>
+                            <th>Price</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>Heavy armor</td>
+                            <td>&times;3</td>
+                          </tr>
+                          <!-- Ekene-Afa -->
+                          <tr>
+                            <th colspan="2">Ekene-Afa</th>
+                          </tr>
+                          <tr>
+                            <td class="pl-5">+1 ammunition (per piece)</td>
+                            <td>50 gp</td>
+                          </tr>
+                          <tr>
+                            <td class="pl-5">+1 shield, wooden</td>
+                            <td>450 gp</td>
+                          </tr>
+                          <tr>
+                            <td class="pl-5">+1 dagger</td>
+                            <td>500 gp</td>
+                          </tr>
+                          <tr>
+                            <td class="pl-5">+1 yklwa</td>
+                            <td>500 gp</td>
+                          </tr>
+                          <!-- Ifan Talro'a -->
+                          <tr>
+                            <th colspan="2">Ifan Talro'a</th>
+                          </tr>
+                          <tr>
+                            <td class="pl-5">Flying monkey</td>
+                            <td>100 gp</td>
+                          </tr>
+                          <tr>
+                            <td class="pl-5">Giant lizard</td>
+                            <td>100 gp</td>
+                          </tr>
+                          <tr>
+                            <td class="pl-5">Hadrosaurus</td>
+                            <td>100 gp</td>
+                          </tr>
+                          <tr>
+                            <td class="pl-5">Ankylosaurus</td>
+                            <td>250 gp</td>
+                          </tr>
+                          <tr>
+                            <td class="pl-5">Deinonychus</td>
+                            <td>250 gp</td>
+                          </tr>
+                          <tr>
+                            <td class="pl-5">Flying snake</td>
+                            <td>250 gp</td>
+                          </tr>
+                          <tr>
+                            <td class="pl-5">Ticeratops</td>
+                            <td>500 gp</td>
+                          </tr>
+                          <!-- Wakanga O'tamu -->
+                          <tr>
+                            <th colspan="2">Wakanga O'tamu</th>
+                          </tr>
+                          <tr>
+                            <td class="pl-5">Potion, common</td>
+                            <td>80 gp</td>
+                          </tr>
+                          <tr>
+                            <td class="pl-5">Potion, uncommon</td>
+                            <td>300 gp</td>
+                          </tr>
+                          <tr>
+                            <td class="pl-5">Spell scroll, 1st-level</td>
+                            <td>100 gp</td>
+                          </tr>
+                          <tr>
+                            <td class="pl-5">Spell scroll, 2nd-level</td>
+                            <td>550 gp</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div class="tables" id="equipment">
+                      <table class="table is-fullwidth is-striped is-hoverable">
+                        <thead>
+                          <tr>
+                            <th>Item</th>
+                            <th>Price</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>
+                              Canoe
+                              <p class="is-size-7"><em>DMG's rowboat, but hold <strong>6</strong> Medium creatures &amp; 2mph max speed</em></p>
+                            </td>
+                            <td>50 gp</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              Insect repellent, incense
+                              <p class="is-size-7"><em>Burns for 8h, protects 20ft. radius</em></p>
+                            </td>
+                            <td>1 sp</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              Insect repellent, salve
+                              <p class="is-size-7"><em><strong>20</strong> applications, lasts for 24h, waterproof</em></p>
+                            </td>
+                            <td>1 gp</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              Rain catcher
+                              <p class="is-size-7"><em>Catches 2 gallons of drinking water per inch of rainfall</em></p>
+                            </td>
+                            <td>1 gp</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              Yklwa
+                              <p class="is-size-7"><em>1d8 piercing, thrown (10/30 ft.)</em></p>
+                            </td>
+                            <td>1 gp</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
               </div>
