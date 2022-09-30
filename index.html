@@ -25,10 +25,14 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-montserrat@1.1.13/index.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@1.1.13/index.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@6.9.96/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
     <link rel="stylesheet" href="style.css">
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
     <script type="text/javascript" src="script.js"></script>
+    <script type="text/javascript" src="rumors.js"></script>
+    <script type="text/javascript" src="text.js"></script>
   </head>
 
   <body>
@@ -253,7 +257,158 @@
                   </div>
 
                 </div>
+              </div>
 
+              <div class="columns">
+                <div class="column">
+                  <div class="box">
+                    <input type="text" class="is-hidden" id="my-rumors">
+
+                    <div class="field">
+                      <div class="control is-expanded">
+                        <button class="button is-success is-small is-fullwidth" id="learn-rumor">
+                          <span class="icon-text">
+                            <span class="icon">
+                              <i class="mdi mdi-chat-plus mdi-18px mt-1"></i>
+                            </span>
+                            <span>Learn Rumor</span>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+
+                    <table class="table is-fullwidth is-striped is-hoverable">
+                      <thead>
+                        <tr>
+                          <th>Known Rumors</th>
+                        </tr>
+                      </thead>
+                      <tbody id="rumors-container">
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div class="column">
+                  <div class="box">
+                    <table class="table is-fullwidth is-striped is-hoverable">
+                      <thead>
+                        <tr>
+                          <th>Stay</th>
+                          <th>Night</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>The Thundering Lizard (Poor)</td>
+                          <td>5 sp</td>
+                        </tr>
+                        <tr>
+                          <td>Kaya's House of Repose (Modest)</td>
+                          <td>1 gp</td>
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    <table class="table is-fullwidth is-striped is-hoverable">
+                      <thead>
+                        <tr>
+                          <th>Monopoly Item</th>
+                          <th>Price</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Heavy armor</td>
+                          <td>&times;3</td>
+                        </tr>
+                        <!-- Ekene-Afa -->
+                        <tr>
+                          <th colspan="2">Ekene-Afa</th>
+                        </tr>
+                        <tr>
+                          <td class="pl-5">+1 ammunition (per piece)</td>
+                          <td>50 gp</td>
+                        </tr>
+                        <tr>
+                          <td class="pl-5">+1 shield, wooden</td>
+                          <td>450 gp</td>
+                        </tr>
+                        <tr>
+                          <td class="pl-5">+1 dagger</td>
+                          <td>500 gp</td>
+                        </tr>
+                        <tr>
+                          <td class="pl-5">+1 yklwa</td>
+                          <td>500 gp</td>
+                        </tr>
+                        <!-- Ifan Talro'a -->
+                        <tr>
+                          <th colspan="2">Ifan Talro'a</th>
+                        </tr>
+                        <tr>
+                          <td class="pl-5">Flying monkey</td>
+                          <td>100 gp</td>
+                        </tr>
+                        <tr>
+                          <td class="pl-5">Giant lizard</td>
+                          <td>100 gp</td>
+                        </tr>
+                        <tr>
+                          <td class="pl-5">Hadrosaurus</td>
+                          <td>100 gp</td>
+                        </tr>
+                        <tr>
+                          <td class="pl-5">Ankylosaurus</td>
+                          <td>250 gp</td>
+                        </tr>
+                        <tr>
+                          <td class="pl-5">Deinonychus</td>
+                          <td>250 gp</td>
+                        </tr>
+                        <tr>
+                          <td class="pl-5">Flying snake</td>
+                          <td>250 gp</td>
+                        </tr>
+                        <tr>
+                          <td class="pl-5">Ticeratops</td>
+                          <td>500 gp</td>
+                        </tr>
+                        <!-- Wakanga O'tamu -->
+                        <tr>
+                          <th colspan="2">Wakanga O'tamu</th>
+                        </tr>
+                        <tr>
+                          <td class="pl-5">Potion, common</td>
+                          <td>80 gp</td>
+                        </tr>
+                        <tr>
+                          <td class="pl-5">Potion, uncommon</td>
+                          <td>300 gp</td>
+                        </tr>
+                        <tr>
+                          <td class="pl-5">Spell scroll, 1st-level</td>
+                          <td>100 gp</td>
+                        </tr>
+                        <tr>
+                          <td class="pl-5">Spell scroll, 2nd-level</td>
+                          <td>550 gp</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <div class="box">
+                <div class="field">
+                  <div class="control is-expanded">
+                    <textarea class="textarea has-fixed-size" id="textarea"></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <div class="box">
                 <div class="field">
                   <div class="control">
                     <button class="button is-danger is-small is-fullwidth" id="clear-localstorage">
